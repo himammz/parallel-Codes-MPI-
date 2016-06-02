@@ -1,4 +1,5 @@
 
+
 #include <mpich/mpi.h>
 #include <stdio.h>
 
@@ -15,7 +16,7 @@ int main(void) {
 	int c;
 	MPI_Status status;
 	if (myRank!=0)
-	{		
+	{
 		MPI_Recv(&part,1,MPI_INT,0,0,MPI_COMM_WORLD,&status);
 		MPI_Recv(arr,part,MPI_INT,0,0,MPI_COMM_WORLD,&status);
 		MPI_Recv(&c,1,MPI_INT,0,0,MPI_COMM_WORLD,&status);
@@ -32,12 +33,15 @@ int main(void) {
 		}
 		MPI_Send(&MaxINd,1,MPI_INT,0,0,MPI_COMM_WORLD);
 		MPI_Send(&MAXn,1,MPI_INT,0,0,MPI_COMM_WORLD);
+		printf("Hello from slave#%d Max number in my partition is %d and index is %d.\n",myRank,MAXn,MaxINd);
 	}
 	else
 	{
 		int n;
+		printf("Enter Array size:");
 		scanf("%d",&n);
 		int i=0;
+				printf("Enter array elements:\n");
 		for (i;i<n;i++)
 		{
 			scanf("%d",&arr[i]);
@@ -79,10 +83,10 @@ int main(void) {
 				MaxINd =ind ;
 				MAXn=num;
 			}
-			
+
 		}
 
-		printf ("Max number in index %d with value %d \n",MaxINd,MAXn );
+		printf ("Master process announce the final max which is %d and its index is %d.Thanks for using our program\n",MAXn,MaxINd );
 	}
 	MPI_Finalize();
 	return 0;
